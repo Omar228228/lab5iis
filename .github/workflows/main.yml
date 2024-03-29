@@ -1,0 +1,26 @@
+name: My GitHub Actions Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Node.js enviroment
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - name: Install dependencies
+      run: npm install
+    - name: start the project
+      run: npm run serve &
+    - name: Wait for Vue server to sleep
+      run: sleep 13s
+    - name: Stop server
+      run: kill $(lsof -t -i :8080) || true
